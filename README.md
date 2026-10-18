@@ -16,3 +16,19 @@ Serve this directory, for example with `python3 -m http.server 8000`, then open 
 GitHub Pages publishes the `main` branch at its root.
 
 The game uses Three.js r128; its MIT license is in `LICENSES/three.txt`.
+
+## Multiplayer
+
+Open Multiplayer on the home screen. One player chooses Create Room, copies the
+8-character code, and sends it to a friend. The friend opens the same game URL,
+enters the code, and chooses Join Room. The host chooses Start Together.
+
+Two human drivers share a countdown, live cars, track markers, and finish times.
+Cars pass through each other. The host can restart or request a rematch with
+Space. Home leaves the room. Keep both browser tabs open during the race.
+Campaign progress remains separate and is stored in each browser.
+
+Networking uses vendored PeerJS 1.5.5, its public signaling service, and a direct
+WebRTC data connection. Multiplayer requires internet access; some restricted
+networks may block connections. This static edition has no dedicated race server.
+PeerJS is MIT licensed; see LICENSES/peerjs.txt.
