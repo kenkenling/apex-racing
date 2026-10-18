@@ -33,7 +33,7 @@ class ApexRoom {
 if(typeof module!=='undefined')module.exports=ApexRoom;
 if(typeof document!=='undefined')installMultiplayer();
 function installMultiplayer(){
-  let connected=false,active=false,startAt=0,clockOffset=0,countdown=false,roundId='',networkClock=0,remotePose=null,remoteProgress=0,remoteTime=null,localTime=null,remoteCar=0,remoteSeq=-1,localSeq=0,remoteModel=null,lastSeen=0,launchPending=false;
+  let connected=false,active=false,startAt=0,clockOffset=0,countdown=false,roundId='',networkClock=0,remotePose=null,remoteProgress=0,remoteTime=null,localTime=null,remoteCar=0,remoteSeq=-1,localSeq=0,remoteModel=null,remoteLook={},remoteLookKey='',lastSeen=0,launchPending=false;
   const base={reset,showHome,chooseMode,step,stepRivals,resolveRivalContact,updateCampaignHud,syncModeUI,campaignIntro,finishLap,togglePause,draw,drawRaceMap};
   const banner=$('#multiplayer-banner');
   function status(text){$('#room-status').textContent=text;$('#room-share').hidden=!room.code;$('#room-code').textContent=room.code;$('#leave-room').hidden=!room.peer;$('#create-room').disabled=!!room.peer;$('#join-room').disabled=!!room.peer}
@@ -48,7 +48,7 @@ function installMultiplayer(){
     $('#start').innerHTML=connected?(room.host?'START TOGETHER ↗':'WAITING FOR HOST'):'WAITING FOR FRIEND';$('#start').disabled=!(connected&&room.host);$('#pause').hidden=true;updateCampaignHud(true);
   }
   function leave(){room.close();active=false;roundId='';$('#multiplayer-lobby').hidden=true;$('#start').disabled=false;$('#pause').hidden=false;$('#mode-multiplayer').setAttribute('aria-pressed','false');rivals.forEach(r=>r.model.visible=true)}
-  function sendPose(){const p=poseFrame();room.send({type:'pose',round:roundId,seq:localSeq++,pose:p,progress:s,car:selectedCar});}
+  function sendPose(){const p=poseFrame();room.send({type:'pose',round:roundId,seq:localSeq++,pose:p,progress:s,car:selectedCar,appearance:carAppearance(selectedCar)});}
   function prepare(id,hostStart){
     if(!connected)return;roundId=id;localSeq=0;remoteSeq=-1;startAt=hostStart-clockOffset;localTime=null;remoteTime=null;remoteProgress=0;remotePose=null;lastSeen=Date.now();active=true;countdown=true;launchPending=true;
     base.reset();launchPending=false;running=false;keys={};ghost.visible=false;rivals.forEach(r=>r.model.visible=false);alignAt(0);lateral=room.host?-4:4;worldPosition.addScaledVector(frame(0).side,lateral);$('#multiplayer-lobby').hidden=true;$('#pause').hidden=true;$('#start').disabled=!room.host;banner.hidden=false;banner.textContent='GET READY';sendPose();
@@ -60,7 +60,7 @@ function installMultiplayer(){
     if(data.type==='pong'&&!room.host&&Number.isFinite(data.now)&&Number.isFinite(data.sent)){clockOffset=data.now-(Date.now()+data.sent)/2;return}
     if(data.type==='start'&&!room.host&&ApexRoom.validCode(data.round)&&Number.isFinite(data.at)&&Math.abs(data.at-(Date.now()+clockOffset))<10000){prepare(data.round,data.at);return}
     if(data.round!==roundId||!active)return;
-    if(data.type==='pose'&&validPose(data)){remoteSeq=data.seq;remotePose=data.pose;remoteProgress=data.progress;remoteCar=data.car;lastSeen=Date.now();return}
+    if(data.type==='pose'&&validPose(data)){remoteSeq=data.seq;remotePose=data.pose;remoteProgress=data.progress;remoteCar=data.car;remoteLook=cleanAppearance(data.appearance);lastSeen=Date.now();return}
     if(data.type==='finish'&&Number.isFinite(data.time)&&data.time>5&&data.time<7200&&remoteProgress>LENGTH*.9){remoteTime=data.time;if(localTime!==null)results();return}
   }
   function results(){
@@ -89,7 +89,7 @@ function installMultiplayer(){
     if(raceMode==='multiplayer'){
       ghost.visible=false;networkClock+=dt;
       if(connected&&networkClock>.05){networkClock=0;if(active)sendPose();else if(!room.host)room.send({type:'ping',sent:Date.now()})}
-      if(remotePose){if(!remoteModel||remoteModel.userData.variant!==remoteCar){if(remoteModel){scene.remove(remoteModel);const materials=new Set();remoteModel.traverse(m=>{if(m.isMesh){m.geometry.dispose();materials.add(m.material)}});materials.forEach(m=>m.dispose())}remoteModel=makeCar('#54e7f5',false,remoteCar);remoteModel.userData.variant=remoteCar;remoteModel.position.set(...remotePose.slice(1,4))}remoteModel.visible=true;const blend=1-Math.exp(-dt*18);remoteModel.position.lerp(new THREE.Vector3(...remotePose.slice(1,4)),blend);remoteModel.rotation.set(remotePose[4],remoteModel.rotation.y+angleDelta(remotePose[5],remoteModel.rotation.y)*blend,remotePose[6],'YXZ')}
+      if(remotePose){if(!remoteModel||remoteModel.userData.variant!==remoteCar||remoteLookKey!==JSON.stringify(remoteLook)){if(remoteModel){scene.remove(remoteModel);const materials=new Set();remoteModel.traverse(m=>{if(m.isMesh){m.geometry.dispose();materials.add(m.material)}});materials.forEach(m=>m.dispose())}remoteModel=makeCar('#54e7f5',false,remoteCar,remoteLook);remoteLookKey=JSON.stringify(remoteLook);remoteModel.userData.variant=remoteCar;remoteModel.position.set(...remotePose.slice(1,4))}remoteModel.visible=true;const blend=1-Math.exp(-dt*18);remoteModel.position.lerp(new THREE.Vector3(...remotePose.slice(1,4)),blend);remoteModel.rotation.set(remotePose[4],remoteModel.rotation.y+angleDelta(remotePose[5],remoteModel.rotation.y)*blend,remotePose[6],'YXZ')}
       updateCampaignHud();if(active&&!countdown&&localTime===null){banner.hidden=Date.now()-startAt>1200&&Date.now()-lastSeen<6000;banner.textContent=Date.now()-lastSeen>6000?'FRIEND CONNECTION SLOW…':'GO!'}
     }
     // Hide the personal-best ghost in the friend race without changing saved runs.

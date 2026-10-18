@@ -32,3 +32,29 @@ Networking uses vendored PeerJS 1.5.5, its public signaling service, and a direc
 WebRTC data connection. Multiplayer requires internet access; some restricted
 networks may block connections. This static edition has no dedicated race server.
 PeerJS is MIT licensed; see LICENSES/peerjs.txt.
+
+## Customize your car
+
+Choose a model, then open **Customize Car** below the track. Pick body paint,
+racing-stripe color, rim color, a gloss or matte finish, and a factory, low, or
+high rear wing. The garage shows a rotating preview. Each model keeps its own
+look in this browser, and your friend sees that look in multiplayer. Customize
+between races; appearance does not change speed or handling.
+
+## Self Best and ghost history
+
+Choose **Self Best** on the home screen to race transparent replays of every
+completed race saved in this browser. Your fastest ghost is gold. Ghosts follow
+the recorded path, timing, jumps, and drifting; they do not collide with you.
+All completed Campaign, Direct Racing, Multiplayer, and Self Best laps join
+the archive. Unfinished/restarted attempts are not saved.
+
+Runs are stored in IndexedDB with no automatic history deletion or run-count
+limit. Browser storage capacity still applies. If a save fails, the game keeps
+existing history and reports the error; the new run remains available in the
+current tab. Clearing this site's browser data removes its archive. History
+is local to each browser, not shared through GitHub or a multiplayer room.
+
+The previous single personal-best ghost is imported on first use. Older laps
+were never recorded separately and cannot be recovered. Ghost racing uses
+instanced car silhouettes to keep large fields practical.
