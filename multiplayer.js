@@ -14,8 +14,8 @@ class ApexRoom {
     this.code=host?ApexRoom.code():code;const generation=this.generation;
     this.onStatus(host?'Creating your room…':'Finding your friend’s room…');
     this.timer=setTimeout(()=>{if(generation!==this.generation)return;this.close();this.onStatus('Connection timed out. Check the code and try another network if needed.');},20000);
-    try{this.peer=new this.PeerType(host?'apex-racing-v1-'+this.code:undefined,{debug:0});}catch{this.close();this.onStatus('This browser cannot start multiplayer. Try a current browser.');return}
-    this.peer.on('open',()=>{if(generation!==this.generation)return;if(host){clearTimeout(this.timer);this.onStatus('Room ready. Copy the code and send it to your friend.')}else this.attach(this.peer.connect('apex-racing-v1-'+code,{reliable:true,serialization:'json',metadata:{game:'apex-v1'}}),generation)});
+    try{this.peer=new this.PeerType(host?'apex-racing-v2-'+this.code:undefined,{debug:0});}catch{this.close();this.onStatus('This browser cannot start multiplayer. Try a current browser.');return}
+    this.peer.on('open',()=>{if(generation!==this.generation)return;if(host){clearTimeout(this.timer);this.onStatus('Room ready. Copy the code and send it to your friend.')}else this.attach(this.peer.connect('apex-racing-v2-'+code,{reliable:true,serialization:'json',metadata:{game:'apex-v1'}}),generation)});
     this.peer.on('connection',connection=>{if(generation!==this.generation||!host||this.connection||connection.metadata?.game!=='apex-v1'){connection.close();return}this.attach(connection,generation)});
     this.peer.on('error',error=>{if(generation!==this.generation)return;const message=error.type==='peer-unavailable'?'Room not found. Ask your friend to keep the room open and check the code.':error.type==='unavailable-id'?'That room code is in use. Click Create Room again.':'Connection failed. Try again; some school or restricted networks block direct connections.';this.close();this.onStatus(message)});
     this.peer.on('disconnected',()=>{if(generation!==this.generation)return;if(this.connection?.open){this.onStatus('Connected to your friend. Room discovery is offline.');return}this.close();this.onStatus('Room connection lost. Create or join a room again.')});
@@ -38,13 +38,14 @@ function installMultiplayer(){
   const banner=$('#multiplayer-banner');
   function status(text){$('#room-status').textContent=text;$('#room-share').hidden=!room.code;$('#room-code').textContent=room.code;$('#leave-room').hidden=!room.peer;$('#create-room').disabled=!!room.peer;$('#join-room').disabled=!!room.peer}
   const room=new ApexRoom(typeof Peer==='undefined'?null:Peer,status,receive,isConnected=>{
-    connected=isConnected;if(isConnected&&!room.host)room.send({type:'ping',sent:Date.now()});$('#start').disabled=!(isConnected&&room.host);
+    connected=isConnected;$('#start').disabled=!(isConnected&&room.host);
     if(!isConnected){active=false;countdown=false;remotePose=null;if(remoteModel)remoteModel.visible=false;banner.hidden=true;if(raceMode==='multiplayer'){running=false;paused=false;keys={};$('#overlay').classList.remove('hidden');$('#multiplayer-lobby').hidden=false;$('#start').innerHTML='WAITING FOR FRIEND';}}
+    if(isConnected){room.send({type:'track',track:TRACK_ID});if(connected&&!room.host)room.send({type:'ping',sent:Date.now()})}
   });
   function selectMultiplayer(){base.showHome();raceMode='multiplayer';rivals.forEach(r=>r.model.visible=false);base.campaignIntro();multiplayerIntro()}
   function multiplayerIntro(){
     $('#multiplayer-lobby').hidden=false;$('#mode-multiplayer').setAttribute('aria-pressed','true');for(const mode of ['campaign','direct'])$('#mode-'+mode).setAttribute('aria-pressed','false');
-    $('#overlay-label').textContent='MULTIPLAYER · TWO HUMAN DRIVERS';$('#overlay-title').textContent='Bring your rival.';$('#overlay-copy').textContent='Create a room and share its code. Your friend joins here. The host starts both cars together. Race clean: cars pass through each other.';
+    $('#overlay-label').textContent='MULTIPLAYER · TWO HUMAN DRIVERS';$('#overlay-title').textContent='Bring your rival.';$('#overlay-copy').textContent='Create a room and share its code. Your friend joins here. Select the same track as your friend. The host starts both cars together. Race clean: cars pass through each other.';
     $('#start').innerHTML=connected?(room.host?'START TOGETHER ↗':'WAITING FOR HOST'):'WAITING FOR FRIEND';$('#start').disabled=!(connected&&room.host);$('#pause').hidden=true;updateCampaignHud(true);
   }
   function leave(){room.close();active=false;roundId='';$('#multiplayer-lobby').hidden=true;$('#start').disabled=false;$('#pause').hidden=false;$('#mode-multiplayer').setAttribute('aria-pressed','false');rivals.forEach(r=>r.model.visible=true)}
@@ -53,12 +54,13 @@ function installMultiplayer(){
     if(!connected)return;roundId=id;localSeq=0;remoteSeq=-1;startAt=hostStart-clockOffset;localTime=null;remoteTime=null;remoteProgress=0;remotePose=null;lastSeen=Date.now();active=true;countdown=true;launchPending=true;
     base.reset();launchPending=false;running=false;keys={};ghost.visible=false;rivals.forEach(r=>r.model.visible=false);alignAt(0);lateral=room.host?-4:4;worldPosition.addScaledVector(frame(0).side,lateral);$('#multiplayer-lobby').hidden=true;$('#pause').hidden=true;$('#start').disabled=!room.host;banner.hidden=false;banner.textContent='GET READY';sendPose();
   }
-  function startRace(){if(!connected||!room.host)return;const id=ApexRoom.code(),time=Date.now()+3500;room.send({type:'start',round:id,at:time});prepare(id,time)}
+  function startRace(){if(!connected||!room.host)return;const id=ApexRoom.code(),time=Date.now()+3500;room.send({type:'start',round:id,at:time,track:TRACK_ID});prepare(id,time)}
   function validPose(data){return Number.isInteger(data.seq)&&data.seq>remoteSeq&&Array.isArray(data.pose)&&data.pose.length===7&&data.pose.every(Number.isFinite)&&data.pose.slice(1,4).every(n=>Math.abs(n)<10000)&&Number.isFinite(data.progress)&&data.progress>=-100&&data.progress<=LENGTH+100&&Number.isInteger(data.car)&&data.car>=0&&data.car<10}
   function receive(data){
+    if(data.type==='track'&&data.track!==TRACK_ID){room.close();status('Different tracks selected. Both players must choose '+TRACK_NAME+' before joining.');return}
     if(data.type==='ping'&&room.host&&Number.isFinite(data.sent)){room.send({type:'pong',sent:data.sent,now:Date.now()});return}
     if(data.type==='pong'&&!room.host&&Number.isFinite(data.now)&&Number.isFinite(data.sent)){clockOffset=data.now-(Date.now()+data.sent)/2;return}
-    if(data.type==='start'&&!room.host&&ApexRoom.validCode(data.round)&&Number.isFinite(data.at)&&Math.abs(data.at-(Date.now()+clockOffset))<10000){prepare(data.round,data.at);return}
+    if(data.type==='start'&&data.track===TRACK_ID&&!room.host&&ApexRoom.validCode(data.round)&&Number.isFinite(data.at)&&Math.abs(data.at-(Date.now()+clockOffset))<10000){prepare(data.round,data.at);return}
     if(data.round!==roundId||!active)return;
     if(data.type==='pose'&&validPose(data)){remoteSeq=data.seq;remotePose=data.pose;remoteProgress=data.progress;remoteCar=data.car;remoteLook=cleanAppearance(data.appearance);lastSeen=Date.now();return}
     if(data.type==='finish'&&Number.isFinite(data.time)&&data.time>5&&data.time<7200&&remoteProgress>LENGTH*.9){remoteTime=data.time;if(localTime!==null)results();return}

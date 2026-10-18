@@ -2,10 +2,10 @@
 
 Play: https://kenkenling.github.io/apex-racing/
 
-A browser racing game with a 2.4 km circuit, ten race-car models, automatic drifting, configurable racing-line assistance, landable jumps, a racing speed guide, and a live track map.
+A browser racing game with five selectable tracks, ten race-car models, automatic drifting, configurable racing-line assistance, landable jumps, a racing speed guide, and a live track map.
 
-- **Direct Racing:** race ten trained AI opponents at the original pace.
-- **Learning Campaign:** 50 rounds against rivals that start with no driving knowledge and study your completed laps.
+- **Direct Racing:** race ten balanced pros at up to 138 mph.
+- **Learning Campaign:** 50 rounds against the same rivals across all tracks. They start with no driving knowledge and study your completed laps.
 - **Controls:** WASD / arrow keys; 4 left, 2 right; Space restart; P or Escape pause.
 - Top speed: 150 mph. Progress and settings save in each player’s browser.
 
@@ -44,7 +44,7 @@ between races; appearance does not change speed or handling.
 ## Self Best and ghost history
 
 Choose **Self Best** on the home screen to race transparent replays of every
-completed race saved in this browser. Your fastest ghost is gold. Ghosts follow
+completed race saved for your selected track in this browser. Your fastest ghost is gold. Ghosts follow
 the recorded path, timing, jumps, and drifting; they do not collide with you.
 All completed Campaign, Direct Racing, Multiplayer, and Self Best laps join
 the archive. Unfinished/restarted attempts are not saved.
@@ -58,3 +58,40 @@ is local to each browser, not shared through GitHub or a multiplayer room.
 The previous single personal-best ghost is imported on first use. Older laps
 were never recorded separately and cannot be recovered. Ghost racing uses
 instanced car silhouettes to keep large fields practical.
+
+## Five tracks, one set of rivals
+
+Use **Your Track** below the race to switch between:
+
+- **Summer 1 recreation** (default): a point-to-point route with an elevated
+  opening, downhill straight, uphill turns, a jump, and a separate finish.
+- **Stunt Sprint:** 2.24 km, fourteen true straight segments and seven jumps.
+- **Desert Dash:** a faster circuit with open corners and a sandy setting.
+- **Alpine Switchback:** a technical layout with alternating tight turns.
+- **Classic Circuit:** the original circuit, with your earlier ghost archive.
+
+The Summer 1 route follows the developer's official first-track reference
+from [PolyTrack by Kodub](https://kodub.itch.io/polytrack). Scale, road geometry,
+and ramp dynamics are adapted to APEX's driving physics.
+
+All tracks use the same ten rival models and one shared 50-round learning
+campaign. Switching tracks keeps their knowledge and your campaign round.
+The most advanced earlier campaign is migrated into the shared campaign;
+older saves are retained. A new campaign resets learning across all tracks.
+Ghost archives and best times stay separate for each track.
+
+Pros are about 9% quicker than the previous policy in a same-track benchmark,
+with a 138 mph cap. Player speed stays capped at 150 mph. Learning mastery
+grows 2.6 times faster, and clean new telemetry gets 55% weight when adapting
+a previously studied segment. Learning still requires completed player laps.
+
+Steering responds sooner, front grip is stronger, rear grip is looser during
+auto drift, and drift drag is lower. Walls and rival contact deflect the car,
+reduce speed, shake the camera, and trigger impact feedback.
+
+## Sound effects
+
+Click **Sound On** in the header. Use the volume slider to adjust the mix.
+Original synthesized effects include engine/gears, wind, tire squeal, takeoff,
+landing, impact, countdown and finish sounds. Pause and hidden tabs mute
+continuous driving effects. Volume is remembered in this browser.
