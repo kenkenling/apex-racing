@@ -4,7 +4,7 @@ Play: https://kenkenling.github.io/apex-racing/
 
 A browser racing game with five selectable tracks, ten race-car models, automatic drifting, configurable racing-line assistance, landable jumps, a racing speed guide, and a live track map.
 
-- **Direct Racing:** race ten balanced pros at up to 138 mph.
+- **Direct Racing:** race ten balanced pros at up to 150 mph.
 - **Learning Campaign:** 50 rounds against the same rivals across all tracks. They start with no driving knowledge and study your completed laps.
 - **Controls:** WASD / arrow keys; 4 left, 2 right; Space restart; P or Escape pause.
 - Top speed: 150 mph. Progress and settings save in each player’s browser.
@@ -81,7 +81,7 @@ older saves are retained. A new campaign resets learning across all tracks.
 Ghost archives and best times stay separate for each track.
 
 Pros are about 9% quicker than the previous policy in a same-track benchmark,
-with a 138 mph cap. Player speed stays capped at 150 mph. Learning mastery
+with a 150 mph cap. Player speed stays capped at 150 mph. Learning mastery
 grows 2.6 times faster, and clean new telemetry gets 55% weight when adapting
 a previously studied segment. Learning still requires completed player laps.
 
@@ -95,3 +95,30 @@ Click **Sound On** in the header. Use the volume slider to adjust the mix.
 Original synthesized effects include engine/gears, wind, tire squeal, takeoff,
 landing, impact, countdown and finish sounds. Pause and hidden tabs mute
 continuous driving effects. Volume is remembered in this browser.
+
+## AI Train
+
+Choose **AI Train** on the home screen to watch 250 independent drivers.
+The first generation launches with full throttle and no steering knowledge.
+Later generations keep successful control programs, mix them, and mutate
+steering and target speeds. Fitness rewards route progress, fewer impacts,
+and faster completed runs. This is local evolutionary learning rather than
+a prerecorded racing line. A seeded bend test improved coverage from about
+90 m to 116 m after twelve generations.
+
+The overhead follow camera watches the leader. The panel shows generation,
+active cars, best coverage, and best finish. Simulation speed can be 1×, 2×
+or 4×. Space or Next Generation evolves immediately; P pauses; Home exits.
+Training knowledge saves in the browser and carries between tracks. Reset
+Training clears that training brain. This separate training population does
+not advance your racing campaign or create player ghost recordings. Cars
+are drawn with instancing so the field can contain all 250 drivers.
+
+## Bend collision checks
+
+Player movement is swept in steps of at most 10 ms. Local road projection
+stays near the car's current section, and wall collision uses the visible
+barrier height and road camber. Barriers are 3.4 m tall to catch short jumps.
+Ground and airborne high-speed impacts are checked on both sides of all
+five tracks. Actual browser rendering and audible sound quality still need
+interactive verification.
