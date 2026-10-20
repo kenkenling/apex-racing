@@ -2,7 +2,7 @@
 
 Play: https://kenkenling.github.io/apex-racing/
 
-A browser racing game with five selectable tracks, ten race-car models, automatic drifting, configurable racing-line assistance, landable jumps, a racing speed guide, and a live track map.
+A browser racing game with six selectable tracks, ten race-car models, automatic drifting, configurable racing-line assistance, landable jumps, a racing speed guide, and a live track map.
 
 - **Direct Racing:** race ten balanced pros at up to 150 mph.
 - **Learning Campaign:** 50 rounds against the same rivals across all tracks. They start with no driving knowledge and study your completed laps.
@@ -59,13 +59,14 @@ The previous single personal-best ghost is imported on first use. Older laps
 were never recorded separately and cannot be recovered. Ghost racing uses
 instanced car silhouettes to keep large fields practical.
 
-## Five tracks, one set of rivals
+## Six tracks, one set of rivals
 
 Use **Your Track** below the race to switch between:
 
 - **Summer 1 recreation** (default): a point-to-point route with an elevated
   opening, downhill straight, uphill turns, a jump, and a separate finish.
 - **Stunt Sprint:** 2.24 km, fourteen true straight segments and seven jumps.
+- **Drift 2:** twenty linked switchback turns that keep the focus on controlled drifting; it has no jump ramps.
 - **Desert Dash:** a faster circuit with open corners and a sandy setting.
 - **Alpine Switchback:** a technical layout with alternating tight turns.
 - **Classic Circuit:** the original circuit, with your earlier ghost archive.
@@ -120,5 +121,5 @@ Player movement is swept in steps of at most 10 ms. Local road projection
 stays near the car's current section, and wall collision uses the visible
 barrier height and road camber. Barriers are 3.4 m tall to catch short jumps.
 Ground and airborne high-speed impacts are checked on both sides of all
-five tracks. Actual browser rendering and audible sound quality still need
+six tracks. Actual browser rendering and audible sound quality still need
 interactive verification.
