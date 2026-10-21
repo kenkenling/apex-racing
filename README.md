@@ -66,7 +66,7 @@ Use **Your Track** below the race to switch between:
 - **Summer 1 recreation** (default): a point-to-point route with an elevated
   opening, downhill straight, uphill turns, a jump, and a separate finish.
 - **Stunt Sprint:** 2.24 km, fourteen true straight segments and seven jumps.
-- **Drift 2:** twenty linked switchback turns that keep the focus on controlled drifting; it has no jump ramps.
+- **Drift 2:** sixteen alternating drift corners in a smooth, non-crossing loop; it has no jump ramps.
 - **Desert Dash:** a faster circuit with open corners and a sandy setting.
 - **Alpine Switchback:** a technical layout with alternating tight turns.
 - **Classic Circuit:** the original circuit, with your earlier ghost archive.
