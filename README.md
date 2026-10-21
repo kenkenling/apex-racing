@@ -2,7 +2,7 @@
 
 Play: https://kenkenling.github.io/apex-racing/
 
-A browser racing game with six selectable tracks, ten race-car models, automatic drifting, configurable racing-line assistance, landable jumps, a racing speed guide, and a live track map.
+A browser racing game with six selectable tracks and campaign fields of up to 350 AI cars, using ten race-car models, automatic drifting, configurable racing-line assistance, landable jumps, a racing speed guide, and a live track map.
 
 - **Direct Racing:** race ten balanced pros at up to 150 mph.
 - **Learning Campaign:** 50 rounds against the same rivals across all tracks. They start with no driving knowledge and study your completed laps.
@@ -75,16 +75,18 @@ The Summer 1 route follows the developer's official first-track reference
 from [PolyTrack by Kodub](https://kodub.itch.io/polytrack). Scale, road geometry,
 and ramp dynamics are adapted to APEX's driving physics.
 
-All tracks use the same ten rival models and one shared 50-round learning
-campaign. Switching tracks keeps their knowledge and your campaign round.
+Choose 1–350 AI rivals for a Learning Campaign from the setting below the
+race. The field uses instanced cars from ten designs for smooth rendering. All
+tracks share the same 50-round campaign learning memory. Switching tracks
+keeps their knowledge and your campaign round.
 The most advanced earlier campaign is migrated into the shared campaign;
 older saves are retained. A new campaign resets learning across all tracks.
 Ghost archives and best times stay separate for each track.
 
 Pros are about 9% quicker than the previous policy in a same-track benchmark,
 with a 150 mph cap. Player speed stays capped at 150 mph. Learning mastery
-grows 2.6 times faster, and clean new telemetry gets 55% weight when adapting
-a previously studied segment. Learning still requires completed player laps.
+grows faster with a 4.5× multiplier, and new telemetry gets 70% weight when
+updating a previously studied segment. Learning still requires completed laps.
 
 Steering responds sooner, front grip is stronger, rear grip is looser during
 auto drift, and drift drag is lower. Walls and rival contact deflect the car,

@@ -10,14 +10,14 @@ class RivalLearning {
   get level(){return Math.min(50,this.rounds+1)}
   get complete(){return this.rounds>=50}
   get coverage(){return this.bins.filter(Boolean).length/160}
-  mastery(rate){return this.rounds===0?0:1-Math.exp(-this.rounds*rate*2.6)}
+  mastery(rate){return this.rounds===0?0:1-Math.exp(-this.rounds*rate*4.5)}
   profile(index){return this.bins[(Math.floor(index)%160+160)%160]}
   study(samples,summary){if(this.complete)return false;if(!samples.some(b=>b&&b.seconds>.01)||!(summary.time>0))return false;
-    for(let i=0;i<160;i++){const b=samples[i];if(!b||b.seconds<=.01)continue;const t=b.seconds,old=this.bins[i],alpha=old?.55:1,mistakes=b.wall/t,line=mistakes>.08?0:b.line/t,speed=.5*b.speed/t+.5*b.peak;
+    for(let i=0;i<160;i++){const b=samples[i];if(!b||b.seconds<=.01)continue;const t=b.seconds,old=this.bins[i],alpha=old?.7:1,mistakes=b.wall/t,line=mistakes>.08?0:b.line/t,speed=.5*b.speed/t+.5*b.peak;
       const blend=(key,value)=>old?old[key]*(1-alpha)+value*alpha:value;
       this.bins[i]={speed:Math.max(0,Math.min(67.06,blend('speed',speed))),line:Math.max(-10,Math.min(10,blend('line',line))),brake:blend('brake',b.brake/t),slip:blend('slip',b.slip/t),mistakes:blend('mistakes',mistakes),seconds:(old?.seconds||0)+t};
     }
-    const learned=Math.max(5,Math.min(31,summary.acceleration||5));this.acceleration=this.rounds?this.acceleration*.45+learned*.55:learned;this.rounds++;if(summary.place===1)this.wins++;this.history.push({level:this.rounds,time:summary.time,place:summary.place,walls:summary.wallHits||0,brakes:summary.brakeEvents||0,average:summary.average||0});this.history=this.history.slice(-50);return true;
+    const learned=Math.max(5,Math.min(31,summary.acceleration||5));this.acceleration=this.rounds?this.acceleration*.3+learned*.7:learned;this.rounds++;if(summary.place===1)this.wins++;this.history.push({level:this.rounds,time:summary.time,place:summary.place,walls:summary.wallHits||0,brakes:summary.brakeEvents||0,average:summary.average||0});this.history=this.history.slice(-50);return true;
   }
   toJSON(){return{rounds:this.rounds,wins:this.wins,acceleration:this.acceleration,bins:this.bins,history:this.history}}
 }
