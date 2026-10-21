@@ -2,7 +2,7 @@
 
 Play: https://kenkenling.github.io/apex-racing/
 
-A browser racing game with six selectable tracks and campaign fields of up to 350 AI cars, using ten race-car models, automatic drifting, configurable racing-line assistance, landable jumps, a racing speed guide, and a live track map.
+A browser racing game with six selectable tracks and campaign fields of up to 350 total cars, including the player, using ten race-car models, automatic drifting, configurable racing-line assistance, landable jumps, a racing speed guide, and a live track map.
 
 - **Direct Racing:** race ten balanced pros at up to 150 mph.
 - **Learning Campaign:** 50 rounds against the same rivals across all tracks. They start with no driving knowledge and study your completed laps.
@@ -75,9 +75,10 @@ The Summer 1 route follows the developer's official first-track reference
 from [PolyTrack by Kodub](https://kodub.itch.io/polytrack). Scale, road geometry,
 and ramp dynamics are adapted to APEX's driving physics.
 
-Choose 1–350 AI rivals for a Learning Campaign from the setting below the
-race. The field uses instanced cars from ten designs for smooth rendering. All
-tracks share the same 50-round campaign learning memory. Switching tracks
+Choose 2–350 total cars for a Learning Campaign from the setting below the
+race; the count includes you, so the largest field has 349 rivals. Rivals use
+instanced copies of the same detailed ten car designs as the player for
+smooth rendering. All tracks share the same 50-round campaign learning memory. Switching tracks
 keeps their knowledge and your campaign round.
 The most advanced earlier campaign is migrated into the shared campaign;
 older saves are retained. A new campaign resets learning across all tracks.
