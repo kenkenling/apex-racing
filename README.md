@@ -6,6 +6,7 @@ A browser racing game with six selectable tracks and campaign fields of up to 35
 
 - **Direct Racing:** race ten balanced pros at up to 150 mph.
 - **Learning Campaign:** 50 rounds against the same rivals across all tracks. They start with no driving knowledge and study your completed laps.
+- **AI Train:** hands-off training follows car #1 and automatically restarts its generation when that car slows to 5 mph or less.
 - **AI Train:** the 250-car field automatically evolves when every active car has launched and then slows to 5 mph or less. Space and Next Generation still advance manually.
 - **Controls:** WASD / arrow keys; 4 left, 2 right; Space restart; P or Escape pause.
 - Top speed: 150 mph. Progress and settings save in each player’s browser.
