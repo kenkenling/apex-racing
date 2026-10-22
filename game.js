@@ -185,7 +185,7 @@ function driftEffects(dt){for(const p of smoke){if(p.life<=0)continue;p.life-=dt
 for(let i=0;i<2;i++){tires[i].y=.25+camberHeight(lateral);if(lastTires){const k=(skidCursor++%480)*6;skidPositions.set([lastTires[i].x,lastTires[i].y,lastTires[i].z,tires[i].x,tires[i].y,tires[i].z],k)}const p=smoke[smokeCursor++%smoke.length];p.life=1.1;p.m.visible=true;p.m.position.copy(tires[i]);p.m.position.y=.7;p.m.scale.setScalar(1);p.v.copy(velocity).multiplyScalar(-.035);p.v.y=1.8}lastTires=tires;skidGeo.attributes.position.needsUpdate=true}
 
 function simulatePlayerStep(dt){if(!running||paused)return;wallFlash=Math.max(0,wallFlash-dt);
-const gas=keys.w||keys.arrowup,brake=keys.s||keys.arrowdown,input=(keys.d||keys.arrowright||keys['2']?1:0)-(keys.a||keys.arrowleft||keys['4']?1:0);steeringAngle+=(-input*.48-steeringAngle)*(1-Math.exp(-dt*(input?10:6)));autoDrift=!airborne&&speed>14&&input!==0&&Math.abs(steeringAngle)>.07;driftBlend+=((autoDrift?.13+.26*assistLevel:1)-driftBlend)*(1-Math.exp(-dt*4));
+const gas=keys.w||keys.arrowup,brake=keys.s||keys.arrowdown,input=(keys.a||keys.arrowleft||keys['4']?1:0)-(keys.d||keys.arrowright||keys['2']?1:0);steeringAngle+=(-input*.48-steeringAngle)*(1-Math.exp(-dt*(input?10:6)));autoDrift=!airborne&&speed>14&&input!==0&&Math.abs(steeringAngle)>.07;driftBlend+=((autoDrift?.13+.26*assistLevel:1)-driftBlend)*(1-Math.exp(-dt*4));
 if(!airborne){
 const forward=new THREE.Vector3(Math.sin(heading),0,Math.cos(heading));const along=Math.max(0,velocity.dot(forward));
 // Wheelbase steering and shared control. The helper adds yaw without moving the car directly.
