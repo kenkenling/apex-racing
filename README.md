@@ -6,6 +6,7 @@ A browser racing game with six selectable tracks and campaign fields of up to 35
 
 - **Direct Racing:** race ten balanced pros at up to 150 mph.
 - **Learning Campaign:** 50 rounds against the same rivals across all tracks. They start with no driving knowledge and study your completed laps.
+- **AI Train:** continuous hands-off training follows the front-most car. Cars learn from their own failures, steer away from wall hits, lower pace near trouble, and restart individually at 5 mph or less. Drone camera controls: WASD to fly, Q/E for height, IJKL to look, R to follow the leader.
 - **AI Train:** hands-off training follows the front-most car. Every car learns from its own failure, steers away from wall hits, lowers pace near the failure, and individually restarts at 5 mph or less.
 - **AI Train:** hands-off training follows the front-most car; each car individually restarts when its speed falls to 5 mph or less.
 - **AI Train:** hands-off training follows car #1 and automatically restarts its generation when that car slows to 5 mph or less.
